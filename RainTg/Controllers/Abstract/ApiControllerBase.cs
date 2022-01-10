@@ -6,8 +6,8 @@ namespace RainTg.Controllers.Abstract
     [Route("api/[controller]")]
     public abstract class ApiControllerBase : Controller
     {
-        private ISender? _mediator = null;
+        private IMediator? _mediator = null;
 
-        protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
     }
 }

@@ -2,6 +2,7 @@
 using Domain.Options;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace Infrastructure.TelegramBot
 {
@@ -16,7 +17,15 @@ namespace Infrastructure.TelegramBot
             _client = new TelegramBotClient(_options.Token);
         }
 
-        public async Task StartReceivingUpdates() => await _client.SetWebhookAsync(_options.WebhookUrl);
-        public async Task StopReceivingUpdates() => await _client.DeleteWebhookAsync(dropPendingUpdates: false);
+        public Task Send(string message, long to)
+        {
+            return _client.SendTextMessageAsync(to, message);
+        }
+
+        public async Task StartReceivingUpdates() =>
+            await _client.SetWebhookAsync(_options.WebhookUrl);
+
+        public async Task StopReceivingUpdates() => 
+            await _client.DeleteWebhookAsync(dropPendingUpdates: false);
     }
 }
