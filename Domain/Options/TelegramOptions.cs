@@ -11,5 +11,7 @@ namespace Domain.Options
         public static string SectionName { get; set; } = "Telegram";
         public string Token { get; set; }
         public string WebhookUrl { get; set; }
+
+        public string RedirectUrl { get; set; }
     }
 }

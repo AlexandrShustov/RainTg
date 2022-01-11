@@ -21,9 +21,6 @@ namespace Application.Updates.NotificationHandlers.UpdateReceived
 
         protected override async Task HandleUpdate(Update update, CancellationToken cancellationToken)
         {
-            var chatId = update!.Message!.Chat.Id;
-            await _bot.Send("Saving to Raindrop...", chatId);
-
             var raindrop = new Raindrop()
             {
                 Link = update.Message.Text,
@@ -34,6 +31,9 @@ namespace Application.Updates.NotificationHandlers.UpdateReceived
             };
 
             await _raindropService.Post(raindrop);
+
+            var chatId = update!.Message!.Chat.Id;
+            await _bot.Send("Raindrop saved!", chatId);
         }
     }
 }
