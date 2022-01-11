@@ -1,4 +1,5 @@
 using Application;
+using Application.Common.Interfaces;
 using Application.Updates.Notifications;
 using Domain.Options;
 using Infrastructure;
