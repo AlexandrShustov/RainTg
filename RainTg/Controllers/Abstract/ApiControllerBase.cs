@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RainTg.Controllers.Abstract
 {
-    [Route("api/[controller]")]
+    // [Route("api/[controller]")]
     public abstract class ApiControllerBase : Controller
     {
         private IMediator? _mediator = null;

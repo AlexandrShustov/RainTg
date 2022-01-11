@@ -1,5 +1,4 @@
-﻿using Application.Updates.Commands;
-using Application.Updates.Notifications;
+﻿using Application.Updates.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using RainTg.Controllers.Abstract;
 using Telegram.Bot.Types;
@@ -16,7 +15,7 @@ namespace RainTg.Controllers
         }
 
         [HttpGet]
-        [Route("ping")]
+        [Route("api/update/ping")]
         public IActionResult Ping()
         {
             return Ok("It works");

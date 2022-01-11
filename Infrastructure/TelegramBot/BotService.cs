@@ -23,7 +23,7 @@ namespace Infrastructure.TelegramBot
         }
 
         public async Task StartReceivingUpdates() =>
-            await _client.SetWebhookAsync(_options.WebhookUrl);
+            await _client.SetWebhookAsync($"{_options.WebhookUrl}/bot/{_options.Token}");
 
         public async Task StopReceivingUpdates() => 
             await _client.DeleteWebhookAsync(dropPendingUpdates: false);

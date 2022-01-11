@@ -1,6 +1,9 @@
 using Application;
+using Application.Updates.Notifications;
 using Domain.Options;
 using Infrastructure;
+using MediatR;
+using Microsoft.Extensions.Options;
 using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,16 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    var token = endpoints.ServiceProvider.GetRequiredService<IOptions<TelegramOptions>>().Value.Token;
+    endpoints.MapControllerRoute(
+        name: "webhook",
+        pattern: $"bot/{token}",
+        defaults: new { controller = "Update", action = "Update" });
+
+    endpoints.MapControllers();
+});
 
 app.Run();
