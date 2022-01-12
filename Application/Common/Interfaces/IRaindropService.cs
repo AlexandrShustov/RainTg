@@ -4,6 +4,6 @@ namespace Application.Common.Interfaces
 {
     public interface IRaindropService
     {
-        Task Post(Raindrop @new);
+        Task Post(Raindrop @new, long from);
     }
 }

@@ -17,10 +17,12 @@ namespace Application.Updates.NotificationHandlers.UpdateReceived
             _raindropService = raindropService;
         }
 
-        protected override bool ShouldHandle(Update update) => update.Type == UpdateType.Message;
+        protected override bool ShouldHandle(Update update) => update.Type == UpdateType.Message && !update.Message.Entities.Any();
 
         protected override async Task HandleUpdate(Update update, CancellationToken cancellationToken)
         {
+            var chatId = update!.Message!.Chat.Id;
+
             var raindrop = new Raindrop()
             {
                 Link = update.Message.Text,
@@ -30,9 +32,7 @@ namespace Application.Updates.NotificationHandlers.UpdateReceived
                 Tags = "test"
             };
 
-            await _raindropService.Post(raindrop);
-
-            var chatId = update!.Message!.Chat.Id;
+            await _raindropService.Post(raindrop, chatId);
             await _bot.Send("Raindrop saved!", chatId);
         }
     }

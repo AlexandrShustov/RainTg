@@ -11,16 +11,21 @@ namespace Infrastructure.Raindrops
     public class RaindropService : IRaindropService
     {
         private readonly HttpClient _httpClient;
+        private readonly IAuthTokenStorage _storage;
 
-        public RaindropService(HttpClient httpClient, IOptions<RaindropOptions> options)
+        public RaindropService(HttpClient httpClient, IAuthTokenStorage storage, IOptions<RaindropOptions> options)
         {
             _httpClient = httpClient;
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {options.Value.TestToken}");
+            _storage = storage;
         }
 
-        public async Task Post(Raindrop @new)
+        public async Task Post(Raindrop @new, long from)
         {
+            var token = await _storage.GetBy(from);
             var content = JsonContent.Create(@new);
+
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
             var result = await _httpClient.PostAsync("https://api.raindrop.io/rest/v1/raindrop", content);
 
             if (result.IsSuccessStatusCode)
