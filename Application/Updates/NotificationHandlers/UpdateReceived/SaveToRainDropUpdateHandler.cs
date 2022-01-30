@@ -17,7 +17,9 @@ namespace Application.Updates.NotificationHandlers.UpdateReceived
             _raindropService = raindropService;
         }
 
-        protected override bool ShouldHandle(Update update) => update.Type == UpdateType.Message && !update.Message.Entities.Any();
+        protected override bool ShouldHandle(Update update) =>
+            update.Type == UpdateType.Message &&
+            !update.Message.Entities.All(x => x.Type != MessageEntityType.BotCommand);
 
         protected override async Task HandleUpdate(Update update, CancellationToken cancellationToken)
         {

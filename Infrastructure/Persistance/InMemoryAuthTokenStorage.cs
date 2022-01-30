@@ -25,7 +25,7 @@ namespace Infrastructure.Persistance
             if (_tokensById.TryGetValue(chatId, out var value))
                 return Task.FromResult(_cryptoService.Decrypt(value));
 
-            return null;
+            return Task.FromResult(string.Empty);
         }
     }
 }

@@ -22,26 +22,39 @@ namespace Infrastructure.Security
 
             var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
-            using MemoryStream memoryStream = new MemoryStream(buffer);
-            using CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            using StreamReader streamReader = new StreamReader(cryptoStream);
-            return streamReader.ReadToEnd();
+            using (MemoryStream memoryStream = new MemoryStream(buffer))
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader streamReader = new StreamReader(cryptoStream))
+                    {
+                        return streamReader.ReadToEnd();
+                    }
+                }
+            }
         }
 
         public string Encrypt(string data)
         {
             using Aes aes = Aes.Create();
             aes.Key = Encoding.UTF8.GetBytes(_options.Value.Key);
+            aes.IV = new byte[16];
 
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
-            using MemoryStream memoryStream = new MemoryStream();
-            using CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-            using StreamWriter streamWriter = new(cryptoStream);
-            streamWriter.Write(data);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                {
+                    using (StreamWriter streamWriter = new(cryptoStream))
+                    {
+                        streamWriter.Write(data);
+                    }
+                }
 
-            byte[] inArray = memoryStream.ToArray();
-            return Convert.ToBase64String(inArray);
+                byte[] inArray = memoryStream.ToArray();
+                return Convert.ToBase64String(inArray);
+            }
         }
     }
 }

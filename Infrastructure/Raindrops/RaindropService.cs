@@ -22,6 +22,9 @@ namespace Infrastructure.Raindrops
         public async Task Post(Raindrop @new, long from)
         {
             var token = await _storage.GetBy(from);
+            if (string.IsNullOrEmpty(token))
+                throw new NotAuthorizedException();
+
             var content = JsonContent.Create(@new);
 
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
